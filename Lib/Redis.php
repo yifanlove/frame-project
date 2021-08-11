@@ -37,7 +37,7 @@
      }
 
      /**
-      * Returns the value of the given key.
+      * 返回给定key的值
       *
       * @param  string  $key
       * @return string|null
@@ -50,7 +50,7 @@
      }
 
      /**
-      * Get the values of all the given keys.
+      * 获取所有给定key的值。
       *
       * @param  array  $keys
       * @return array
@@ -63,7 +63,7 @@
      }
 
      /**
-      * Determine if the given keys exist.
+      * 确定给定的key是否存在。
       *
       * @param  dynamic  $keys
       * @return int
@@ -78,7 +78,7 @@
      }
 
      /**
-      * Set the string value in argument as value of the key.
+      * 设置string
       *
       * @param  string  $key
       * @param  mixed  $value
@@ -97,7 +97,7 @@
      }
 
      /**
-      * Set the given key if it doesn't exist.
+      * 如果给定的键不存在，请设置该键。
       *
       * @param  string  $key
       * @param  string  $value
@@ -109,7 +109,7 @@
      }
 
      /**
-      * Get the value of the given hash fields.
+      * 批量获取hsah.
       *
       * @param  string  $key
       * @param  dynamic  $dictionary
@@ -125,7 +125,7 @@
      }
 
      /**
-      * Set the given hash fields to their respective values.
+      * 批量设置hsah
       *
       * @param  string  $key
       * @param  dynamic  $dictionary
@@ -145,7 +145,7 @@
      }
 
      /**
-      * Set the given hash field if it doesn't exist.
+      * 如果给定的哈希字段不存在，则设置该字段。
       *
       * @param  string  $hash
       * @param  string  $key
@@ -158,7 +158,7 @@
      }
 
      /**
-      * Removes the first count occurrences of the value element from the list.
+      * 从列表中删除值元素的首次计数
       *
       * @param  string  $key
       * @param  int  $count
@@ -171,7 +171,7 @@
      }
 
      /**
-      * Removes and returns a random element from the set value at key.
+      *
       *
       * @param  string  $key
       * @param  int|null  $count
@@ -183,7 +183,7 @@
      }
 
      /**
-      * Add one or more members to a sorted set or update its score if it already exists.
+      * 将一个或多个成员添加到集合中或更新其分数
       *
       * @param  string  $key
       * @param  dynamic  $dictionary
@@ -204,7 +204,7 @@
      }
 
      /**
-      * Return elements with score between $min and $max.
+      * 按分数返回集合中的元素
       *
       * @param  string  $key
       * @param  mixed  $min
@@ -225,7 +225,7 @@
      }
 
      /**
-      * Return elements with score between $min and $max.
+      * 返回得分在$min和$max之间的元素
       *
       * @param  string  $key
       * @param  mixed  $min
@@ -246,7 +246,7 @@
      }
 
      /**
-      * Find the intersection between sets and store in a new set.
+      * 找到集合之间的交集并存储在新集合中。
       *
       * @param  string  $output
       * @param  array  $keys
@@ -262,7 +262,7 @@
      }
 
      /**
-      * Find the union between sets and store in a new set.
+      * 查找集合之间的并集并存储在新集合中。
       *
       * @param  string  $output
       * @param  array  $keys
@@ -278,7 +278,7 @@
      }
 
      /**
-      * Execute commands in a pipeline.
+      * 在管道中执行命令
       *
       * @param  callable  $callback
       * @return \Redis|array
@@ -293,7 +293,7 @@
      }
 
      /**
-      * Execute commands in a transaction.
+      * 在事务中执行命令。
       *
       * @param  callable  $callback
       * @return \Redis|array
@@ -307,77 +307,12 @@
              : tap($transaction, $callback)->exec();
      }
 
-     /**
-      * Evaluate a LUA script serverside, from the SHA1 hash of the script instead of the script itself.
-      *
-      * @param  string  $script
-      * @param  int  $numkeys
-      * @param  mixed  $arguments
-      * @return mixed
-      */
-     public function evalsha($script, $numkeys, ...$arguments)
-     {
-         return $this->command('evalsha', [
-             $this->script('load', $script), $arguments, $numkeys,
-         ]);
-     }
+
+
+
 
      /**
-      * Evaluate a script and return its result.
-      *
-      * @param  string  $script
-      * @param  int  $numberOfKeys
-      * @param  dynamic  $arguments
-      * @return mixed
-      */
-     public function eval($script, $numberOfKeys, ...$arguments)
-     {
-         return $this->client->eval($script, $arguments, $numberOfKeys);
-     }
-
-     /**
-      * Subscribe to a set of given channels for messages.
-      *
-      * @param  array|string  $channels
-      * @param  \Closure  $callback
-      * @return void
-      */
-     public function subscribe($channels, Closure $callback)
-     {
-         $this->client->subscribe((array) $channels, function ($redis, $channel, $message) use ($callback) {
-             $callback($message, $channel);
-         });
-     }
-
-     /**
-      * Subscribe to a set of given channels with wildcards.
-      *
-      * @param  array|string  $channels
-      * @param  \Closure  $callback
-      * @return void
-      */
-     public function psubscribe($channels, Closure $callback)
-     {
-         $this->client->psubscribe((array) $channels, function ($redis, $pattern, $channel, $message) use ($callback) {
-             $callback($message, $channel);
-         });
-     }
-
-     /**
-      * Subscribe to a set of given channels for messages.
-      *
-      * @param  array|string  $channels
-      * @param  \Closure  $callback
-      * @param  string  $method
-      * @return void
-      */
-     public function createSubscription($channels, Closure $callback, $method = 'subscribe')
-     {
-         //
-     }
-
-     /**
-      * Execute a raw command.
+      * 执行原始命令
       *
       * @param  array  $parameters
       * @return mixed
